@@ -24,7 +24,7 @@ def get_conjugations(lang, verb):
         req = requests.get(VERBIX_URL.format(lang, verb))    
     except requests.exceptions.RequestException as e:  
         print("Exception connecting to Verbix API")
-        return None      
+        return set([])       
     html_string = req.text    
     
     # Parse response using beautiful soup
@@ -75,11 +75,11 @@ def main():
     all_words = set([])     
     for verb in content:
         print('Conjugating {0}'.format(verb))
-        words = get_conjugations(language, verb)
-        if words is not None:
+        words = get_conjugations(language, verb)        
+        if len(words) > 0:
             all_words.update(words)
         else:
-            print("Error conjugating verb [{}] in language [{}]".format(verb, language))            
+            print("Error conjugating verb \"{}\" in language \"{}\"".format(verb, language))            
 
     # Output final conjugations 
     all_words = sorted(all_words)   
