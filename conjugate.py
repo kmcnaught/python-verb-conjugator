@@ -23,6 +23,8 @@ def verbix_connection_okay():
         return False
     return True
 
+# Use the verbix API to return a list of all conjugations
+# of a given verb/language combination
 def get_conjugations(lang, verb):        
     
     # Make http request    
