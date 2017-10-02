@@ -88,5 +88,6 @@ def main():
             f.write(word)
             f.write('\n')
 
+    print("\nOutput saved in {0}\n".format(output_file))
 
 if __name__ == "__main__": main()
