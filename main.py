@@ -6,11 +6,25 @@ VERBIX_TABLE_URL = "http://tools.verbix.com/webverbix/personal/template.htm"
 VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
               + VERBIX_TABLE_URL \
               + "&verb={1}"
-        
+      
+# Test connection to verbix website  
+def verbix_connection_okay():
+    try: 
+        req = requests.get(VERBIX_TABLE_URL)    
+    except requests.exceptions.RequestException as e:  
+        print("\nError connecting to Verbix API\n")
+        print(e)
+        return False
+    return True
+
 def get_conjugations(lang, verb):        
     
-    # Make http request
-    req = requests.get(VERBIX_URL.format(lang, verb))    
+    # Make http request    
+    try: 
+        req = requests.get(VERBIX_URL.format(lang, verb))    
+    except requests.exceptions.RequestException as e:  
+        print("Exception connecting to Verbix API")
+        return None      
     html_string = req.text    
     
     # Parse response using beautiful soup
@@ -47,6 +61,11 @@ def main():
     language = args.lang
     input_file = args.input
     output_file = args.output
+
+    # Check connection to Verbix 
+    if not verbix_connection_okay():
+        print("\nPlease check your connection and try again\n")
+        return        
     
     # Read input varbs    
     with open(input_file) as f:
