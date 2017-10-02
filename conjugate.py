@@ -7,6 +7,12 @@ VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
               + VERBIX_TABLE_URL \
               + "&verb={1}"
       
+def print_verbix_citation():
+    print("This tool uses the Verbix online conjugation API at http://www.verbix.com")
+    print("The content extracted may be copied for non-commercial usage.")
+    print("See http://www.verbix.com/webverbix/termsofuse.html")
+    print("")
+
 # Test connection to verbix website  
 def verbix_connection_okay():
     try: 
@@ -61,6 +67,9 @@ def main():
     language = args.lang
     input_file = args.input
     output_file = args.output
+
+    # Adhering to verbix terms of use...
+    print_verbix_citation()
 
     # Check connection to Verbix 
     if not verbix_connection_okay():
