@@ -1,53 +1,36 @@
 import argparse
 import requests
-from html.parser import HTMLParser
+from bs4 import BeautifulSoup
 
 VERBIX_TABLE_URL = "http://tools.verbix.com/webverbix/personal/template.htm" 
 VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
               + VERBIX_TABLE_URL \
               + "&verb={1}"
-
-def element_in_list_of_tuples(the_list, elem):    
-    for item in the_list:
-        if elem in item:
-            return True
-    return False
-
-# Extract any pronouns and conjugated verbs from a verbix
-# conjugation table.
-# Both pronouns and verbs are the only things in "span" elements.
-class ConjugationTableParser(HTMLParser):
-    
-    def __init__(self, ignore_pronouns=False):
-        HTMLParser.__init__(self)
-        self.relevant_tag = False
-        self.data = set([]) 
-        self.ignore_pronouns = ignore_pronouns        
-    
-    def handle_starttag(self, tag, attrs):
-        if (tag == "span"):                     
-            is_pronoun = element_in_list_of_tuples(attrs, 'pronoun');
-            if not is_pronoun or not self.ignore_pronouns:                
-                self.relevant_tag = True;
-
-    def handle_endtag(self, tag):
-        self.relevant_tag = False;
         
-    def handle_data(self, data):
-        if self.relevant_tag:
-            for word in data.split():
-                self.data.add(word)
-        
-
 def get_conjugations(lang, verb, ignore_pronouns):        
-    r = requests.get(VERBIX_URL.format(lang, verb))
-    parser = ConjugationTableParser(ignore_pronouns)
-    parser.feed(r.text)
-    if len(parser.data) == 0:
-#         print("ERROR: {}".format(r.text))
-        return None
-    else:
-        return parser.data
+    
+    # Make http request
+    req = requests.get(VERBIX_URL.format(lang, verb))    
+    html_string = req.text    
+    
+    # Parse response using beautiful soup
+    soup = BeautifulSoup(html_string, "html5lib")
+    regular_verbs = soup.findAll('span', attrs={"class" : "normal"})
+    irregular_verbs = soup.findAll('span', attrs={"class" : "irregular"})
+    
+    # Extract verbs from HTML elements
+    # Verbs are classed as "normal" or "irregular"
+    # Any compound verbs get split into individual words
+    all_verbs = set([]) 
+    for html_elem in regular_verbs:
+        for word in html_elem.string.split():
+            all_verbs.add(word)
+        
+    for html_elem in irregular_verbs:
+        for word in html_elem.string.split():
+            all_verbs.add(word)
+           
+    return all_verbs
 
 def main():
 
