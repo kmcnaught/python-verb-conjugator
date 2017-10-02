@@ -32,5 +32,5 @@ python conjugate.py -i sample-french.txt -l fra -o out_french.txt
 ```
 
 # Languages supported
-The verbix API supports over twenty different languages. To see the list of supported languages and their codes, see:
+The Verbix API (and hence this tool) supports over twenty different languages. To see the list of supported languages and their codes, see:
 http://api.verbix.com/conjugator/html#LanguageCodes
