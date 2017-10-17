@@ -78,7 +78,7 @@ def main():
         print("\nPlease check your connection and try again\n")
         return        
     
-    # Read input varbs    
+    # Read input verbs
     with open(input_file) as f:
         content = f.read().splitlines()
     
