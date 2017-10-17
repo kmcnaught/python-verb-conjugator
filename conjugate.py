@@ -104,7 +104,9 @@ def main():
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Conjugate a list of verbs.')
+    parser = argparse.ArgumentParser(prog='verb_conjugator',
+                                     description='Conjugate a list of verbs.',
+                                     epilog='\npython conjugate.py -i sample-french.txt -l fra -o out_french.txt')  
     parser.add_argument('-l', '--lang', type=str, required=True,
                         help="3-character language code. For language codes, see {}".format(VERBIX_LANG_CODES_URL))
     # TODO: single quotes
