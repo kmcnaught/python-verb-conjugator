@@ -1,6 +1,7 @@
 import argparse
 import requests
 from bs4 import BeautifulSoup
+import sys
 
 
 VERBIX_TABLE_URL = 'http://tools.verbix.com/webverbix/personal/template.htm'
@@ -21,16 +22,13 @@ def print_verbix_citation():
     print(VERBIX_CITATION)
 
 
-def verbix_connection_okay():
+def check_verbix_connection():
     """Test connection to verbix website
     """
     try:
         requests.get(VERBIX_TABLE_URL)
-    except requests.exceptions.RequestException as e:  
-        print("\nError connecting to Verbix API\n")
-        print(e)
-        return False
-    return True
+    except requests.exceptions.RequestException as e:
+        sys.exit("\nError connecting to Verbix API\n{}\n".format(e))
 
 
 def get_conjugations(lang, verb):
@@ -59,11 +57,7 @@ def get_conjugations(lang, verb):
     # Verbs are classed as "normal" or "irregular"
     # Any compound verbs get split into individual words
     all_verbs = set([]) 
-    for html_elem in regular_verbs:
-        for word in html_elem.string.split():
-            all_verbs.add(word)
-        
-    for html_elem in irregular_verbs:
+    for html_elem in regular_verbs + irregular_verbs:
         for word in html_elem.string.split():
             all_verbs.add(word)
            
@@ -82,9 +76,7 @@ def main():
     print_verbix_citation()
 
     # Check connection to Verbix 
-    if not verbix_connection_okay():
-        print('\nPlease check your connection and try again\n')
-        return        
+    check_verbix_connection()
     
     # Read input verbs
     with open(input_file) as f:
@@ -106,7 +98,7 @@ def main():
 def get_parser():
     parser = argparse.ArgumentParser(prog='verb_conjugator',
                                      description='Conjugate a list of verbs.',
-                                     epilog='\npython conjugate.py -i sample-french.txt -l fra -o out_french.txt')  
+                                     epilog='\npython conjugate.py -i sample-french.txt -l fra -o out_french.txt')
     parser.add_argument('-l', '--lang', type=str, required=True,
                         help="3-character language code. For language codes, see {}".format(VERBIX_LANG_CODES_URL))
     # TODO: single quotes
