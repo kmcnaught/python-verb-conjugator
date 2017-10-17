@@ -86,7 +86,7 @@ def main():
 
     # Check connection to Verbix 
     if not verbix_connection_okay():
-        print("\nPlease check your connection and try again\n")
+        print('\nPlease check your connection and try again\n')
         return        
     
     # Read input verbs
@@ -96,12 +96,12 @@ def main():
     # Conjugate verbs one by one
     all_words = set([])     
     for verb in content:
-        print('Conjugating {0}'.format(verb))
+        print('Conjugating {}'.format(verb))
         words = get_conjugations(language, verb)        
         if len(words) > 0:
             all_words.update(words)
         else:
-            print("Error conjugating verb \"{}\" in language \"{}\"".format(verb, language))            
+            print('Error conjugating verb "{}" in language "{}"'.format(verb, language))
 
     # Output final conjugations 
     all_words = sorted(all_words)   
@@ -110,8 +110,8 @@ def main():
             f.write(word)
             f.write('\n')
 
-    print("\nOutput saved in {0}\n".format(output_file))
+    print('\nOutput saved in {0}\n'.format(output_file))
 
 
-if __name__ == "__main__": main()
+if __name__ == '__main__': main()
 
