@@ -10,15 +10,18 @@ VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
 
 
 def print_verbix_citation():
+    """Necessary citation for Verbix
+    """
     print("This tool uses the Verbix online conjugation API at http://www.verbix.com")
     print("The content extracted may be copied for non-commercial usage.")
     print("See http://www.verbix.com/webverbix/termsofuse.html")
     print("")
 
 
-# Test connection to verbix website  
 def verbix_connection_okay():
-    try: 
+    """Test connection to verbix website
+    """
+    try:
         req = requests.get(VERBIX_TABLE_URL)    
     except requests.exceptions.RequestException as e:  
         print("\nError connecting to Verbix API\n")
@@ -27,10 +30,11 @@ def verbix_connection_okay():
     return True
 
 
-# Use the verbix API to return a list of all conjugations
-# of a given verb/language combination
-def get_conjugations(lang, verb):        
-    
+def get_conjugations(lang, verb):
+    """Use the verbix API to return a list of all conjugations
+    of a given verb/language combination
+    """
+
     # Make http request    
     try: 
         req = requests.get(VERBIX_URL.format(lang, verb))    
