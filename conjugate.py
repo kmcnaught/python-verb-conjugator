@@ -2,16 +2,19 @@ import argparse
 import requests
 from bs4 import BeautifulSoup
 
+
 VERBIX_TABLE_URL = "http://tools.verbix.com/webverbix/personal/template.htm" 
 VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
               + VERBIX_TABLE_URL \
               + "&verb={1}"
-      
+
+
 def print_verbix_citation():
     print("This tool uses the Verbix online conjugation API at http://www.verbix.com")
     print("The content extracted may be copied for non-commercial usage.")
     print("See http://www.verbix.com/webverbix/termsofuse.html")
     print("")
+
 
 # Test connection to verbix website  
 def verbix_connection_okay():
@@ -22,6 +25,7 @@ def verbix_connection_okay():
         print(e)
         return False
     return True
+
 
 # Use the verbix API to return a list of all conjugations
 # of a given verb/language combination
@@ -101,4 +105,6 @@ def main():
 
     print("\nOutput saved in {0}\n".format(output_file))
 
+
 if __name__ == "__main__": main()
+
