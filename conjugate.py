@@ -33,6 +33,9 @@ def verbix_connection_okay():
 def get_conjugations(lang, verb):
     """Use the verbix API to return a list of all conjugations
     of a given verb/language combination
+
+    :param str lang: Language code
+    :param str verb: Verb to conjugate
     """
 
     # Make http request    
