@@ -3,19 +3,22 @@ import requests
 from bs4 import BeautifulSoup
 
 
-VERBIX_TABLE_URL = "http://tools.verbix.com/webverbix/personal/template.htm" 
-VERBIX_URL = "http://api.verbix.com/conjugator/html?language={0}&tableurl=" \
+VERBIX_TABLE_URL = 'http://tools.verbix.com/webverbix/personal/template.htm'
+VERBIX_LANG_CODES_URL = 'http://api.verbix.com/conjugator/html'
+VERBIX_URL = 'http://api.verbix.com/conjugator/html?language={0}&tableurl=' \
               + VERBIX_TABLE_URL \
-              + "&verb={1}"
+              + '&verb={1}'
+VERBIX_CITATION = """
+This tool uses the Verbix online conjugation API at http://www.verbix.com
+The content extracted may be copied for non-commercial usage.
+See http://www.verbix.com/webverbix/termsofuse.html
+"""
 
 
 def print_verbix_citation():
     """Necessary citation for Verbix
     """
-    print("This tool uses the Verbix online conjugation API at http://www.verbix.com")
-    print("The content extracted may be copied for non-commercial usage.")
-    print("See http://www.verbix.com/webverbix/termsofuse.html")
-    print("")
+    print(VERBIX_CITATION)
 
 
 def verbix_connection_okay():
@@ -70,7 +73,8 @@ def main():
     # Parse command line inputs
     parser = argparse.ArgumentParser(description='Conjugate a list of verbs.')
     parser.add_argument('-l', '--lang', type=str, required=True,
-                        help="3-character language code. For language codes, see http://api.verbix.com/conjugator/html")
+                        help="3-character language code. For language codes, see {}".format(VERBIX_LANG_CODES_URL))
+    # TODO: single quotes
     parser.add_argument('-i', '--input', type=str, required=True,
                        help='input file (list of infinitive verbs)')    
     parser.add_argument('-o', '--output', type=str,
